@@ -44,8 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IProgram.cs" />
+    <Compile Include="IUserInfoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyBlog.DataAccess.Entity\MyBlog.DataAccess.Entity.csproj">
+      <Project>{5d3e9907-4f73-4613-b2f7-49871d2791e3}</Project>
+      <Name>MyBlog.DataAccess.Entity</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -35,8 +35,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,8 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserInfoRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyBlog.DataAccess.Definition\MyBlog.DataAccess.Definition.csproj">
+      <Project>{585e7552-30db-4d8e-8765-e8bf90e2209b}</Project>
+      <Name>MyBlog.DataAccess.Definition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyBlog.DataAccess.Entity\MyBlog.DataAccess.Entity.csproj">
+      <Project>{5d3e9907-4f73-4613-b2f7-49871d2791e3}</Project>
+      <Name>MyBlog.DataAccess.Entity</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

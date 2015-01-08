@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="MyBlogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="LogInfos">
           <Key>
             <PropertyRef Name="LogId" />
@@ -17,6 +24,35 @@
           <Property Name="Message" Type="text" />
           <Property Name="Exception" Type="text" />
         </EntityType>
+        <EntityType Name="Posts">
+          <Key>
+            <PropertyRef Name="PostId" />
+          </Key>
+          <Property Name="PostId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PostCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Visiable" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CommentCount" Type="smallint" />
+          <Property Name="AuthorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="Content" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PostTags">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PostId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TagName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserInfos">
           <Key>
             <PropertyRef Name="UserId" />
@@ -26,10 +62,80 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UserLoginName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UserLoginPwd" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Posts_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Posts" Type="Self.Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Posts">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Posts_UserInfos">
+          <End Role="UserInfos" Type="Self.UserInfos" Multiplicity="1" />
+          <End Role="Posts" Type="Self.Posts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfos">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Posts">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PostTags_Posts">
+          <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
+          <End Role="PostTags" Type="Self.PostTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="PostTags">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PostTags_Tags">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1" />
+          <End Role="PostTags" Type="Self.PostTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="PostTags">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MyBlogModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogInfos" EntityType="Self.LogInfos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Posts" EntityType="Self.Posts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PostTags" EntityType="Self.PostTags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfos" EntityType="Self.UserInfos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Posts_Categories" Association="Self.FK_Posts_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Posts" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_UserInfos" Association="Self.FK_Posts_UserInfos">
+            <End Role="UserInfos" EntitySet="UserInfos" />
+            <End Role="Posts" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostTags_Posts" Association="Self.FK_PostTags_Posts">
+            <End Role="Posts" EntitySet="Posts" />
+            <End Role="PostTags" EntitySet="PostTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostTags_Tags" Association="Self.FK_PostTags_Tags">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="PostTags" EntitySet="PostTags" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -44,10 +150,32 @@
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserLoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserLoginPwd" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityContainer Name="MyBlogEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="UserInfos" EntityType="Self.UserInfo" />
           <EntitySet Name="LogInfos" EntityType="MyBlogModel.LogInfo" />
+          <EntitySet Name="Categories" EntityType="MyBlogModel.Category" />
+          <EntitySet Name="Posts" EntityType="MyBlogModel.Post" />
+          <EntitySet Name="PostTags" EntityType="MyBlogModel.PostTag" />
+          <EntitySet Name="Tags" EntityType="MyBlogModel.Tag" />
+          <AssociationSet Name="FK_Posts_Categories" Association="MyBlogModel.FK_Posts_Categories">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Posts_UserInfos" Association="MyBlogModel.FK_Posts_UserInfos">
+            <End Role="UserInfo" EntitySet="UserInfos" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostTags_Posts" Association="MyBlogModel.FK_PostTags_Posts">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="PostTag" EntitySet="PostTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostTags_Tags" Association="MyBlogModel.FK_PostTags_Tags">
+            <End Role="Tag" EntitySet="Tags" />
+            <End Role="PostTag" EntitySet="PostTags" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LogInfo">
           <Key>
@@ -61,6 +189,94 @@
           <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostId" />
+          </Key>
+          <Property Name="PostId" Type="Guid" Nullable="false" />
+          <Property Name="PostCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Visiable" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CommentCount" Type="Int16" />
+          <Property Name="AuthorId" Type="Guid" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Category" Relationship="MyBlogModel.FK_Posts_Categories" FromRole="Post" ToRole="Category" />
+          <NavigationProperty Name="UserInfo" Relationship="MyBlogModel.FK_Posts_UserInfos" FromRole="Post" ToRole="UserInfo" />
+        </EntityType>
+        <EntityType Name="PostTag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="PostId" Type="Guid" Nullable="false" />
+          <Property Name="TagId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="MyBlogModel.FK_PostTags_Posts" FromRole="PostTag" ToRole="Post" />
+          <NavigationProperty Name="Tag" Relationship="MyBlogModel.FK_PostTags_Tags" FromRole="PostTag" ToRole="Tag" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="TagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TagName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Posts_Categories">
+          <End Type="MyBlogModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="MyBlogModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Posts_UserInfos">
+          <End Type="MyBlogModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+          <End Type="MyBlogModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PostTags_Posts">
+          <End Type="MyBlogModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="MyBlogModel.PostTag" Role="PostTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostId" />
+            </Principal>
+            <Dependent Role="PostTag">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PostTags_Tags">
+          <End Type="MyBlogModel.Tag" Role="Tag" Multiplicity="1" />
+          <End Type="MyBlogModel.PostTag" Role="PostTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="TagId" />
+            </Principal>
+            <Dependent Role="PostTag">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -70,6 +286,8 @@
           <EntitySetMapping Name="UserInfos">
             <EntityTypeMapping TypeName="MyBlogModel.UserInfo">
               <MappingFragment StoreEntitySet="UserInfos">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserCode" ColumnName="UserCode" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -88,6 +306,46 @@
                 <ScalarProperty Name="Thread" ColumnName="Thread" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="LogId" ColumnName="LogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="MyBlogModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="MyBlogModel.Post">
+              <MappingFragment StoreEntitySet="Posts">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="CommentCount" ColumnName="CommentCount" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Visiable" ColumnName="Visiable" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostTags">
+            <EntityTypeMapping TypeName="MyBlogModel.PostTag">
+              <MappingFragment StoreEntitySet="PostTags">
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="MyBlogModel.Tag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

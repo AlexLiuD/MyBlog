@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category.cs">
+      <DependentUpon>MyBlog.tt</DependentUpon>
+    </Compile>
     <Compile Include="LogInfo.cs">
       <DependentUpon>MyBlog.tt</DependentUpon>
     </Compile>
@@ -71,10 +74,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyBlog.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Post.cs">
+      <DependentUpon>MyBlog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PostTag.cs">
+      <DependentUpon>MyBlog.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tag.cs">
+      <DependentUpon>MyBlog.tt</DependentUpon>
+    </Compile>
     <Compile Include="UserInfo.cs">
       <DependentUpon>MyBlog.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserInfoExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

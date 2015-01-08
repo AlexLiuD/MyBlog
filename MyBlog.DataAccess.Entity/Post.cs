@@ -12,14 +12,19 @@ namespace MyBlog.DataAccess.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class UserInfo
+    public partial class Post
     {
-        public System.Guid UserId { get; set; }
-        public int UserCode { get; set; }
-        public string UserName { get; set; }
-        public string UserLoginName { get; set; }
-        public string UserLoginPwd { get; set; }
-        public string UserEmail { get; set; }
+        public System.Guid PostId { get; set; }
+        public int PostCode { get; set; }
+        public string Title { get; set; }
+        public bool Visiable { get; set; }
         public System.DateTime CreateTime { get; set; }
+        public Nullable<short> CommentCount { get; set; }
+        public System.Guid AuthorId { get; set; }
+        public Nullable<int> CategoryId { get; set; }
+        public string Content { get; set; }
+    
+        public virtual Category Category { get; set; }
+        public virtual UserInfo UserInfo { get; set; }
     }
 }
