@@ -41,6 +41,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -56,6 +59,8 @@
     <Compile Include="Category.cs">
       <DependentUpon>MyBlog.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityExtentions.cs" />
+    <Compile Include="IEntityBase.cs" />
     <Compile Include="LogInfo.cs">
       <DependentUpon>MyBlog.tt</DependentUpon>
     </Compile>
@@ -74,6 +79,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyBlog.edmx</DependentUpon>
     </Compile>
+    <Compile Include="OperateStatus.cs" />
     <Compile Include="Post.cs">
       <DependentUpon>MyBlog.tt</DependentUpon>
     </Compile>
@@ -90,11 +96,11 @@
     <Compile Include="UserInfoExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <EntityDeploy Include="MyBlog.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MyBlog.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="MyBlog.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MyBlog.edmx</DependentUpon>

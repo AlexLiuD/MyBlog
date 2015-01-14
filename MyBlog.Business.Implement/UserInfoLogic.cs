@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace MyBlog.Business.Implement
 {
-    public class UserInfoLogic : IUserInfoLogic
+    /// <summary>
+    /// 用户信息业务逻辑层
+    /// </summary>
+    public class UserInfoLogic : EntityBaseLogic<UserInfo>, IUserInfoLogic
     {
         private readonly IUserInfoRepository repository;
 
@@ -18,6 +21,7 @@ namespace MyBlog.Business.Implement
         /// </summary>
         /// <param name="repository"></param>
         public UserInfoLogic(IUserInfoRepository repository)
+            : base(repository)
         {
             this.repository = repository;
         }

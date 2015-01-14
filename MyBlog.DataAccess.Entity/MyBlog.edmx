@@ -7,9 +7,9 @@
     <Schema Namespace="MyBlogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categories">
           <Key>
-            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryName" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="LogInfos">
@@ -26,9 +26,9 @@
         </EntityType>
         <EntityType Name="Posts">
           <Key>
-            <PropertyRef Name="PostId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="PostId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PostCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Visiable" Type="bit" Nullable="false" />
@@ -44,20 +44,20 @@
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PostId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="TagId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Tags">
           <Key>
-            <PropertyRef Name="TagId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="TagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TagName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="UserInfos">
           <Key>
-            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UserLoginName" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -70,7 +70,7 @@
           <End Role="Posts" Type="Self.Posts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Categories">
-              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Posts">
               <PropertyRef Name="CategoryId" />
@@ -82,7 +82,7 @@
           <End Role="Posts" Type="Self.Posts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserInfos">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Posts">
               <PropertyRef Name="AuthorId" />
@@ -94,7 +94,7 @@
           <End Role="PostTags" Type="Self.PostTags" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Posts">
-              <PropertyRef Name="PostId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PostTags">
               <PropertyRef Name="PostId" />
@@ -106,7 +106,7 @@
           <End Role="PostTags" Type="Self.PostTags" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Tags">
-              <PropertyRef Name="TagId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PostTags">
               <PropertyRef Name="TagId" />
@@ -141,25 +141,13 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyBlogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="UserInfo">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="UserCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserLoginName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserLoginPwd" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <EntityContainer Name="MyBlogEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="UserInfos" EntityType="Self.UserInfo" />
           <EntitySet Name="LogInfos" EntityType="MyBlogModel.LogInfo" />
           <EntitySet Name="Categories" EntityType="MyBlogModel.Category" />
           <EntitySet Name="Posts" EntityType="MyBlogModel.Post" />
           <EntitySet Name="PostTags" EntityType="MyBlogModel.PostTag" />
           <EntitySet Name="Tags" EntityType="MyBlogModel.Tag" />
+          <EntitySet Name="UserInfos" EntityType="MyBlogModel.UserInfo" />
           <AssociationSet Name="FK_Posts_Categories" Association="MyBlogModel.FK_Posts_Categories">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Post" EntitySet="Posts" />
@@ -176,7 +164,7 @@
             <End Role="Tag" EntitySet="Tags" />
             <End Role="PostTag" EntitySet="PostTags" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="LogInfo">
           <Key>
             <PropertyRef Name="LogId" />
@@ -191,16 +179,16 @@
         </EntityType>
         <EntityType Name="Category">
           <Key>
-            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
-            <PropertyRef Name="PostId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="PostId" Type="Guid" Nullable="false" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="PostCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Visiable" Type="Boolean" Nullable="false" />
@@ -218,23 +206,35 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="PostId" Type="Guid" Nullable="false" />
-          <Property Name="TagId" Type="Int32" Nullable="false" />
+          <Property Name="TagId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Post" Relationship="MyBlogModel.FK_PostTags_Posts" FromRole="PostTag" ToRole="Post" />
           <NavigationProperty Name="Tag" Relationship="MyBlogModel.FK_PostTags_Tags" FromRole="PostTag" ToRole="Tag" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
-            <PropertyRef Name="TagId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="TagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="TagName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="UserCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserLoginName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserLoginPwd" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="FK_Posts_Categories">
           <End Type="MyBlogModel.Category" Role="Category" Multiplicity="0..1" />
           <End Type="MyBlogModel.Post" Role="Post" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
-              <PropertyRef Name="CategoryId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Post">
               <PropertyRef Name="CategoryId" />
@@ -246,7 +246,7 @@
           <End Type="MyBlogModel.Post" Role="Post" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserInfo">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Post">
               <PropertyRef Name="AuthorId" />
@@ -258,7 +258,7 @@
           <End Type="MyBlogModel.PostTag" Role="PostTag" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Post">
-              <PropertyRef Name="PostId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PostTag">
               <PropertyRef Name="PostId" />
@@ -270,32 +270,19 @@
           <End Type="MyBlogModel.PostTag" Role="PostTag" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Tag">
-              <PropertyRef Name="TagId" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="PostTag">
               <PropertyRef Name="TagId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MyBlogModelStoreContainer" CdmEntityContainer="MyBlogEntities">
-          <EntitySetMapping Name="UserInfos">
-            <EntityTypeMapping TypeName="MyBlogModel.UserInfo">
-              <MappingFragment StoreEntitySet="UserInfos">
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserCode" ColumnName="UserCode" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="UserLoginName" ColumnName="UserLoginName" />
-                <ScalarProperty Name="UserLoginPwd" ColumnName="UserLoginPwd" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="LogInfos">
             <EntityTypeMapping TypeName="MyBlogModel.LogInfo">
               <MappingFragment StoreEntitySet="LogInfos">
@@ -313,7 +300,7 @@
             <EntityTypeMapping TypeName="MyBlogModel.Category">
               <MappingFragment StoreEntitySet="Categories">
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -328,7 +315,7 @@
                 <ScalarProperty Name="Visiable" ColumnName="Visiable" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="PostCode" ColumnName="PostCode" />
-                <ScalarProperty Name="PostId" ColumnName="PostId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -345,11 +332,24 @@
             <EntityTypeMapping TypeName="MyBlogModel.Tag">
               <MappingFragment StoreEntitySet="Tags">
                 <ScalarProperty Name="TagName" ColumnName="TagName" />
-                <ScalarProperty Name="TagId" ColumnName="TagId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="UserInfos">
+            <EntityTypeMapping TypeName="MyBlogModel.UserInfo">
+              <MappingFragment StoreEntitySet="UserInfos">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserLoginPwd" ColumnName="UserLoginPwd" />
+                <ScalarProperty Name="UserLoginName" ColumnName="UserLoginName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserCode" ColumnName="UserCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

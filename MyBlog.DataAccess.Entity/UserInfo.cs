@@ -14,7 +14,7 @@ namespace MyBlog.DataAccess.Entity
     
     public partial class UserInfo
     {
-        public System.Guid UserId { get; set; }
+        public System.Guid Id { get; set; }
         public int UserCode { get; set; }
         public string UserName { get; set; }
         public string UserLoginName { get; set; }

@@ -25,11 +25,11 @@ namespace MyBlog.DataAccess.Entity
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<UserInfo> UserInfos { get; set; }
         public virtual DbSet<LogInfo> LogInfos { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostTag> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<UserInfo> UserInfos { get; set; }
     }
 }

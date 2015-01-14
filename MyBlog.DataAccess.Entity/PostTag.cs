@@ -16,7 +16,7 @@ namespace MyBlog.DataAccess.Entity
     {
         public System.Guid Id { get; set; }
         public System.Guid PostId { get; set; }
-        public int TagId { get; set; }
+        public System.Guid TagId { get; set; }
     
         public virtual Post Post { get; set; }
         public virtual Tag Tag { get; set; }

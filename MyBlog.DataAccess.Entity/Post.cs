@@ -14,7 +14,7 @@ namespace MyBlog.DataAccess.Entity
     
     public partial class Post
     {
-        public System.Guid PostId { get; set; }
+        public System.Guid Id { get; set; }
         public int PostCode { get; set; }
         public string Title { get; set; }
         public bool Visiable { get; set; }

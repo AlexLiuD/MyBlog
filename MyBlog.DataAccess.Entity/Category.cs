@@ -14,7 +14,7 @@ namespace MyBlog.DataAccess.Entity
     
     public partial class Category
     {
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
         public string CategoryName { get; set; }
     }
 }

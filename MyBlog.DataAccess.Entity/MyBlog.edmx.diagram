@@ -5,17 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d21d5bffa6e144cbab8088cf278adf4c" Name="Diagram1">
-        <EntityTypeShape EntityType="MyBlogModel.UserInfo" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MyBlogModel.LogInfo" Width="1.5" PointX="12.125" PointY="1.375" />
-        <EntityTypeShape EntityType="MyBlogModel.Category" Width="1.5" PointX="3.5" PointY="4.875" />
-        <EntityTypeShape EntityType="MyBlogModel.Post" Width="1.5" PointX="3.625" PointY="0.5" />
-        <EntityTypeShape EntityType="MyBlogModel.PostTag" Width="1.5" PointX="6.125" PointY="1.625" />
-        <EntityTypeShape EntityType="MyBlogModel.Tag" Width="1.5" PointX="8.75" PointY="1.875" />
+        <EntityTypeShape EntityType="MyBlogModel.Category" Width="1.5" PointX="1.5" PointY="6" />
+        <EntityTypeShape EntityType="MyBlogModel.Post" Width="1.5" PointX="3.75" PointY="1.125" />
+        <EntityTypeShape EntityType="MyBlogModel.PostTag" Width="1.5" PointX="6" PointY="1.75" />
+        <EntityTypeShape EntityType="MyBlogModel.Tag" Width="1.5" PointX="8.375" PointY="1.875" />
+        <EntityTypeShape EntityType="MyBlogModel.UserInfo" Width="1.5" PointX="1.5" PointY="1.5" />
         <AssociationConnector Association="MyBlogModel.FK_Posts_Categories" />
         <AssociationConnector Association="MyBlogModel.FK_Posts_UserInfos" />
         <AssociationConnector Association="MyBlogModel.FK_PostTags_Posts" />
         <AssociationConnector Association="MyBlogModel.FK_PostTags_Tags" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

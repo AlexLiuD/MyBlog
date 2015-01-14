@@ -14,7 +14,7 @@ namespace MyBlog.DataAccess.Entity
     
     public partial class Tag
     {
-        public int TagId { get; set; }
+        public System.Guid Id { get; set; }
         public string TagName { get; set; }
     }
 }

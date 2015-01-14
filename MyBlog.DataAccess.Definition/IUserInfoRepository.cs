@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace MyBlog.DataAccess.Definition
 {
-    public interface IUserInfoRepository
+    /// <summary>
+    /// 用户信息数据访问接口
+    /// </summary>
+    public interface IUserInfoRepository : IRepository<UserInfo>
     {
         /// <summary>
         /// 快速查询
